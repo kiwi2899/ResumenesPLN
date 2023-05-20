@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resumen</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        {% if resumen %}
+            <h2>Resumen:</h2>
+            <p id="contenido-resumen">{{ resumen }}</p>
+            <button id="descargar-pdf">Descargar resumen en PDF</button>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById("descargar-pdf").addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var resumenHTML = document.getElementById("contenido-resumen").innerHTML;
+            
+            html2pdf().set({
+                margin: [10, 10, 10, 10], // Margen de la página
+                filename: 'resumen.pdf', // Nombre del archivo PDF
+                image: { type: 'jpeg', quality: 1 }, // Opcional: Configuración de imagen
+                html2canvas: { scale: 1 }, // Opcional: Configuración de html2canvas
+                jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' } // Opcional: Configuración de jsPDF
+            }).from(resumenHTML).save();
+            var resumenTexto = document.getElementById("contenido-resumen").textContent;
+            var blob = new Blob([resumenTexto], { type: 'text/plain' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'resumen.txt';
+            link.click();
+        });
+    </script>
+</body>
+</html>

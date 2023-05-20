@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interfaz Flask</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+           background-image: url("{{ url_for('static', filename='background.gif') }}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .container {
+            border: 4px solid orange;
+            border-image: linear-gradient(to bottom, orange, blue) 1;
+            padding: 20px;
+            background-color: #f1f1f1; 
+            background-size: cover;
+            background-position: center;
+        }
+
+        img.logo {
+            width: 100px;
+        }
+    </style>
+    <script>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                var errorMessage = "{{ messages[0] }}";
+                alert(errorMessage);
+            {% endif %}
+        {% endwith %}
+    </script>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo de la empresa" class="logo">
+        <h1>Bienvenido a mi aplicacion de Resumenes con PLN</h1>
+        <form method="POST" action="{{ url_for('resumen') }}" enctype="multipart/form-data">
+            <label for="archivo">Ingresa tu archivo a resumir:</label>
+            <input type="file" id="archivo" name="archivo" accept=".txt" required>
+            <br>
+            <label for="porcentaje">Porcentaje de oraciones en el resumen:</label>
+            <input type="number" id="porcentaje" name="porcentaje" min="1" max="100" required>
+            <br>
+            <input type="submit" value="Resumir">
+        </form>
+
+        <br>
+        <p>Integrantes del equipo:</p>
+        <p>Alejandro Rodríguez Gutiérrez 180350</p>
+        <p>Nombre del integrante 2</p>
+        <br>
+        <p>Universidad Politécnica de San Luis Potosí</p>
+    </div>
+</body>
+</html>
